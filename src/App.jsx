@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { ToastProvider } from './context/ToastContext'; // <-- 1. Import
+import { ToastProvider } from './context/ToastContext'; 
 import { AppRoutes } from './routes/AppRoutes';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ToastProvider> {/* <-- 2. Add ToastProvider here */}
+        <ToastProvider> 
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-1">

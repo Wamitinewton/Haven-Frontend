@@ -1,54 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import chatService from '../../services/chat.service';
-import { useToast } from '../../context/ToastContext';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../utils/constants';
 
-export const ChatSidebar = ({ selectedSessionId }) => {
-  const [sessions, setSessions] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCreating, setIsCreating] = useState(false);
-  const { addToast } = useToast();
+export const ChatSidebar = ({
+  selectedSessionId,
+  sessions,
+  isLoading,
+  isCreating,
+  onNewChat,
+}) => {
   const navigate = useNavigate();
-
-  const fetchSessions = async () => {
-    try {
-      const response = await chatService.getChatSessions(0, 20);
-      setSessions(response.data.content || []);
-    } catch (error) {
-      addToast('Failed to load chat history', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchSessions();
-  }, []);
-
-  const handleNewChat = async () => {
-    setIsCreating(true);
-    try {
-      const response = await chatService.startChatSession();
-      const newSession = response.data;
-      setSessions([newSession, ...sessions]);
-      addToast(response.message || 'New chat started!', 'success');
-      navigate(`${ROUTES.CHAT}/${newSession.sessionId}`);
-    } catch (error) {
-      addToast('Failed to start new chat', 'error');
-    } finally {
-      setIsCreating(false);
-    }
-  };
 
   return (
     <div className="w-full sm:w-1/3 md:w-1/4 h-full border-r border-white/20 flex flex-col">
       <div className="p-4 border-b border-white/20">
         <button
           className="btn-primary w-full text-sm"
-          onClick={handleNewChat}
+          onClick={onNewChat}
           disabled={isCreating}
         >
           {isCreating ? 'Starting...' : '+ New Chat'}

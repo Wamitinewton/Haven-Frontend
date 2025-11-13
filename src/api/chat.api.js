@@ -1,9 +1,8 @@
 import axiosInstance from './axios.config';
 import { API_ENDPOINTS } from '../utils/constants';
 
-const startChatSession = (initialMessage) => {
-  const requestBody = initialMessage ? { initialMessage } : {};
-  return axiosInstance.post(API_ENDPOINTS.CHAT.START_SESSION, requestBody);
+const startChatSession = () => {
+  return axiosInstance.post(API_ENDPOINTS.CHAT.START_SESSION, {});
 };
 
 const getChatSessions = (page = 0, size = 15) => {

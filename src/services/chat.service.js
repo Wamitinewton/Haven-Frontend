@@ -1,8 +1,8 @@
 import { chatAPI } from '../api/chat.api';
 
 class ChatService {
-  async startChatSession(initialMessage) {
-    const response = await chatAPI.startChatSession(initialMessage);
+  async startChatSession() {
+    const response = await chatAPI.startChatSession();
     return response.data;
   }
 

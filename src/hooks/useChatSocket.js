@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { WS_BASE_URL } from '../utils/constants';
 import tokenService from '../services/token.service';
 
 const STREAMING_ID = 'ai-streaming-message';
 
-export const useChatSocket = (sessionId) => {
+export const useChatSocket = (sessionId, onStreamComplete) => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
   const [isStreaming, setIsStreaming] = useState(false);
-  const streamingMessageRef = useRef(null);
+  const streamingContentRef = useRef('');
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     sessionId ? WS_BASE_URL : null,
@@ -38,36 +38,66 @@ export const useChatSocket = (sessionId) => {
 
       if (data.type === 'chunk') {
         setIsStreaming(true);
-        if (!streamingMessageRef.current) {
-          streamingMessageRef.current = {
-            id: STREAMING_ID,
-            role: 'ASSISTANT',
-            content: data.content,
-            createdAt: new Date().toISOString(),
-          };
-          setMessages((prev) => [...prev, streamingMessageRef.current]);
-        } else {
-          streamingMessageRef.current.content += data.content;
-          setMessages((prev) =>
-            prev.map((msg) =>
-              msg.id === STREAMING_ID
-                ? { ...streamingMessageRef.current }
-                : msg
-            )
+
+        streamingContentRef.current += data.content;
+
+        setMessages((prevMessages) => {
+          const streamingMsgIndex = prevMessages.findIndex(
+            (msg) => msg.id === STREAMING_ID
           );
-        }
+
+          if (streamingMsgIndex === -1) {
+            const newMessage = {
+              id: STREAMING_ID,
+              role: 'ASSISTANT',
+              content: streamingContentRef.current,
+              createdAt: new Date().toISOString(),
+              isStreaming: true,
+            };
+            return [...prevMessages, newMessage];
+          } else {
+            const updatedMessages = [...prevMessages];
+            updatedMessages[streamingMsgIndex] = {
+              ...updatedMessages[streamingMsgIndex],
+              content: streamingContentRef.current,
+            };
+            return updatedMessages;
+          }
+        });
       } else if (data.type === 'complete') {
         setIsStreaming(false);
-        streamingMessageRef.current = null;
+
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg.id === STREAMING_ID
+              ? { 
+                  ...msg, 
+                  id: `ai-msg-${Date.now()}`,
+                  isStreaming: false 
+                }
+              : msg
+          )
+        );
+
+        streamingContentRef.current = '';
+
+        if (onStreamComplete) {
+          onStreamComplete();
+        }
       } else if (data.type === 'error') {
         setIsStreaming(false);
         setError(data.message || 'An unknown WebSocket error occurred');
-        streamingMessageRef.current = null;
+        
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== STREAMING_ID)
+        );
+
+        streamingContentRef.current = '';
       }
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, onStreamComplete]);
 
-  const sendMessage = (message) => {
+  const sendMessage = useCallback((message) => {
     if (readyState === ReadyState.OPEN) {
       const token = tokenService.getAccessToken();
       const payload = {
@@ -88,7 +118,7 @@ export const useChatSocket = (sessionId) => {
     } else {
       setError('WebSocket is not connected. Please wait...');
     }
-  };
+  }, [readyState, sessionId, sendJsonMessage]);
 
   const isConnected = readyState === ReadyState.OPEN;
   const isConnecting = readyState === ReadyState.CONNECTING;
