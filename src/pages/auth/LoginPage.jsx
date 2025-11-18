@@ -1,6 +1,5 @@
 import { LoginForm } from "../../components/auth/LoginForm";
-import { Card } from "../../components/common/Card";
-import { LOGO } from "../../assets";
+import { LOGO, LOGIN_BG } from "../../assets";
 
 export const LoginPage = () => {
   return (
@@ -22,6 +21,11 @@ export const LoginPage = () => {
           Your mental health matters. We're here to support you.
         </p>
       </div>
+      <img
+        src={LOGIN_BG}
+        alt="Register"
+        className="w-1/2 h-full object-contain hidden md:block"
+      />
     </div>
   );
 };
