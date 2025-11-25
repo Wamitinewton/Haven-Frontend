@@ -1,6 +1,6 @@
-import { createContext, useState, useEffect } from 'react';
-import authService from '../services/auth.service';
-import userService from '../services/user.service';
+import { createContext, useState, useEffect } from "react";
+import authService from "../services/auth.service";
+import userService from "../services/user.service";
 
 export const AuthContext = createContext(null);
 
@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
       }
     } catch (error) {
+      console.error("Error checking auth:", error);
       setUser(null);
       setIsAuthenticated(false);
     } finally {
