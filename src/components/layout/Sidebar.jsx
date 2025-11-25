@@ -2,18 +2,18 @@ import React, { useState, createContext, useContext } from "react";
 import { LOGO } from "../../assets";
 import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
 import { useAuth } from "../../hooks/useAuth";
-import { IconSettingsFilled } from "@tabler/icons-react";
 import {
   IconUserFilled,
   IconLayout2Filled,
   IconMessage2Filled,
   IconChartAreaFilled,
+  IconLogout2,
 } from "@tabler/icons-react";
 
 const SidebarContext = createContext();
 
 export default function Sidebar({ children }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -67,8 +67,11 @@ export default function Sidebar({ children }) {
               </p>
               <p className="text-xs text-gray-500">{user?.email}</p>
             </div>
-            <button className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100">
-              <IconSettingsFilled className="w-6 h-6" />
+            <button
+              onClick={logout}
+              className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
+            >
+              <IconLogout2 className="w-6 h-6" />
             </button>
           </div>
         </div>

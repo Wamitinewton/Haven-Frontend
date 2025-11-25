@@ -1,6 +1,6 @@
 import { Card } from "../common/Card";
 
-export const ProfileCard = ({ user }) => {
+export const DashboardCard = ({ user }) => {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -10,7 +10,7 @@ export const ProfileCard = ({ user }) => {
   };
 
   return (
-    <Card className="animate-fade-in">
+    <Card className="animate-fade-in w-full md:w-1/3">
       <div className="flex flex-col items-center text-center">
         <div className="w-24 h-24 rounded-full bg-linear-to-br from-primary-400 to-accent-400 flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg">
           {user?.full_name?.charAt(0).toUpperCase() || "U"}

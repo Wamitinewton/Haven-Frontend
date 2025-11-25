@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 // import { Navbar } from '../../components/layout/Navbar'; // <-- This is correctly commented/removed
-import { useToast } from '../../context/ToastContext';
-import { usePaginate } from '../../hooks/usePaginate';
-import insightService from '../../services/insight.service';
-import { LoadingSpinner } from '../../components/common/LoadingSpinner';
-import { Pagination } from '../../components/common/Pagination';
-import { InsightList } from '../../components/insights/InsightList';
-import { InsightDetailModal } from '../../components/insights/InsightDetailModal';
+import { useToast } from "../../context/ToastContext";
+import { usePaginate } from "../../hooks/usePaginate";
+import insightService from "../../services/insight.service";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner";
+import { Pagination } from "../../components/common/Pagination";
+import { InsightList } from "../../components/insights/InsightList";
+import { InsightDetailModal } from "../../components/insights/InsightDetailModal";
 
 export const InsightsPage = () => {
   const [insights, setInsights] = useState([]);
@@ -26,7 +26,7 @@ export const InsightsPage = () => {
       setInsights(response.data.content || []);
       pagination.setPaginationData(response.data);
     } catch (error) {
-      addToast('Failed to load insights', 'error');
+      addToast("Failed to load insights", "error");
     } finally {
       setIsLoading(false);
     }
@@ -41,11 +41,11 @@ export const InsightsPage = () => {
     try {
       const response = await insightService.generateInsight();
       setInsights([response.data, ...insights]);
-      addToast(response.message || 'New insight generated!', 'success');
+      addToast(response.message || "New insight generated!", "success");
     } catch (error) {
       addToast(
-        error.response?.data?.message || 'Failed to generate insight',
-        'error'
+        error.response?.data?.message || "Failed to generate insight",
+        "error"
       );
     } finally {
       setIsGenerating(false);
@@ -63,7 +63,7 @@ export const InsightsPage = () => {
         );
         setSelectedInsight(updatedInsight);
       } catch (error) {
-        addToast('Failed to mark insight as read', 'error');
+        addToast("Failed to mark insight as read", "error");
       }
     }
   };
@@ -80,9 +80,9 @@ export const InsightsPage = () => {
         prev.map((i) => (i.id === id ? updatedInsight : i))
       );
       setSelectedInsight(updatedInsight);
-      addToast(response.message || 'Thank you for your feedback!', 'success');
+      addToast(response.message || "Thank you for your feedback!", "success");
     } catch (error) {
-      addToast('Failed to submit feedback', 'error');
+      addToast("Failed to submit feedback", "error");
     }
   };
 
@@ -93,13 +93,15 @@ export const InsightsPage = () => {
         <main className="flex-1">
           <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
             <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold gradient-text">Your Insights</h1>
+              <h1 className="text-3xl font-bold gradient-text">
+                Your Insights
+              </h1>
               <button
                 className="btn-primary"
                 onClick={handleGenerateInsight}
                 disabled={isGenerating}
               >
-                {isGenerating ? 'Generating...' : 'Generate New Insight'}
+                {isGenerating ? "Generating..." : "Generate New Insight"}
               </button>
             </div>
 
