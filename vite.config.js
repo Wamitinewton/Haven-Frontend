@@ -11,7 +11,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8081',
+        target: 'https://haven-drauhuadfhf9bjby.southafricanorth-01.azurewebsites.net/v3/haven-drauhuadfhf9bjby.southafricanorth-01.azurewebsites.net',
         changeOrigin: true,
       }
     }

@@ -1,46 +1,62 @@
 import { formatDistanceToNow } from 'date-fns';
 
-export const InsightCard = ({ insight, onClick }) => {
-  const typeStyles = {
-    MOOD_PATTERN: 'bg-blue-100 text-blue-800',
-    STRESS_INDICATOR: 'bg-red-100 text-red-800',
-    COPING_STRATEGY: 'bg-green-100 text-green-800',
-    PROGRESS_UPDATE: 'bg-purple-100 text-purple-800',
-    WELLNESS_TIP: 'bg-yellow-100 text-yellow-800',
-    CONVERSATION_SUMMARY: 'bg-gray-100 text-gray-800',
-  };
-
+export const InsightCard = ({
+  insight,
+  onClick,
+  formatDate,
+  getInsightTypeIcon,
+  getInsightTypeColor,
+}) => {
   return (
     <button
-      onClick={onClick}
-      className="card w-full text-left p-0! overflow-hidden shadow-lg! hover:shadow-2xl! animate-slide-up"
+      onClick={() => onClick(insight)}
+      className="bg-white rounded-2xl border border-gray-200 p-6 text-left hover:border-gray-300 hover:shadow-md transition-all group w-full"
     >
-      <div className="p-5">
-        <div className="flex justify-between items-center mb-2">
-          <span
-            className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
-              typeStyles[insight.type] || typeStyles.WELLNESS_TIP
-            }`}
-          >
-            {insight.type.replace('_', ' ')}
-          </span>
-          {!insight.isRead && (
-            <span className="w-2.5 h-2.5 bg-primary-500 rounded--full" />
-          )}
+      <div className="flex items-start justify-between mb-4">
+        <div
+          className={`w-10 h-10 rounded-xl flex items-center justify-center border ${getInsightTypeColor(
+            insight.type
+          )}`}
+        >
+          {getInsightTypeIcon(insight.type)}
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">
-          {insight.title}
-        </h3>
-        <p className="text-sm text-gray-600 line-clamp-3">
-          {insight.content}
-        </p>
+        <span className="text-xs text-gray-400">
+          {formatDate(insight.created_at)}
+        </span>
       </div>
-      <div className="bg-white/50 px-5 py-3 border-t border-white/30">
-        <p className="text-xs text-gray-500">
-          {formatDistanceToNow(new Date(insight.createdAt), {
-            addSuffix: true,
-          })}
-        </p>
+
+      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-gray-700">
+        {insight.title || 'Insight'}
+      </h3>
+
+      <p className="text-sm text-gray-500 line-clamp-3 mb-4">
+        {insight.content}
+      </p>
+
+      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+        <span
+          className={`text-xs font-medium px-2.5 py-1 rounded-lg capitalize ${getInsightTypeColor(
+            insight.type
+          )}`}
+        >
+          {insight.type}
+        </span>
+        <span className="text-xs text-gray-400 group-hover:text-gray-600 flex items-center gap-1">
+          View details
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </span>
       </div>
     </button>
   );

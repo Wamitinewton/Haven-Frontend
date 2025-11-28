@@ -21,6 +21,11 @@ class InsightService {
     return response.data;
   }
 
+  async deleteInsight(id) {
+    const response = await insightAPI.deleteInsight(id);
+    return response.data;
+  }
+
   async provideInsightFeedback(id, helpful, feedback) {
     const response = await insightAPI.provideInsightFeedback(
       id,

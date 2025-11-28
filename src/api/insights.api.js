@@ -19,6 +19,10 @@ const markInsightAsRead = (id) => {
   return axiosInstance.put(API_ENDPOINTS.INSIGHTS.MARK_AS_READ(id));
 };
 
+const deleteInsight = (id) => {
+  return axiosInstance.delete(API_ENDPOINTS.INSIGHTS.GET_INSIGHT_BY_ID(id));
+};
+
 const provideInsightFeedback = (id, helpful, feedback) => {
   return axiosInstance.post(API_ENDPOINTS.INSIGHTS.PROVIDE_FEEDBACK(id), {
     helpful,
@@ -31,5 +35,6 @@ export const insightAPI = {
   generateInsight,
   getInsightById,
   markInsightAsRead,
+  deleteInsight,
   provideInsightFeedback,
 };
