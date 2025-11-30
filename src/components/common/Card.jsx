@@ -1,6 +1,9 @@
-export const Card = ({ children, className = '', ...props }) => {
+export const Card = ({ children, className = "", ...props }) => {
   return (
-    <div className={`card ${className}`} {...props}>
+    <div
+      className={`rounded-3xl hover:shadow-xs transition-all duration-300 border border-gray-200 p-4 ${className}`}
+      {...props}
+    >
       {children}
     </div>
   );

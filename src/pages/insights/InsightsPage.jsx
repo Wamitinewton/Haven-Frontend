@@ -27,8 +27,8 @@ export const InsightsPage = () => {
       );
       setInsights(response.data.content || []);
       pagination.setPaginationData(response.data);
-    } catch (error) {
-      addToast('Failed to load insights', 'error');
+    } catch {
+      addToast("Failed to load insights", "error");
     } finally {
       setIsLoading(false);
     }
@@ -36,6 +36,7 @@ export const InsightsPage = () => {
 
   useEffect(() => {
     fetchInsights();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination.pageParams.page]);
 
   const handleGenerateInsight = async () => {
@@ -43,11 +44,11 @@ export const InsightsPage = () => {
     try {
       const response = await insightService.generateInsight();
       setInsights([response.data, ...insights]);
-      addToast(response.message || 'New insight generated!', 'success');
-    } catch (error) {
+      addToast(response.message || "New insight generated!", "success");
+    } catch (err) {
       addToast(
-        error.response?.data?.message || 'Failed to generate insight',
-        'error'
+        err.response?.data?.message || "Failed to generate insight",
+        "error"
       );
     } finally {
       setIsGenerating(false);
@@ -64,8 +65,8 @@ export const InsightsPage = () => {
           prev.map((i) => (i.id === insight.id ? updatedInsight : i))
         );
         setSelectedInsight(updatedInsight);
-      } catch (error) {
-        addToast('Failed to mark insight as read', 'error');
+      } catch {
+        addToast("Failed to mark insight as read", "error");
       }
     }
   };
@@ -82,9 +83,9 @@ export const InsightsPage = () => {
         prev.map((i) => (i.id === id ? updatedInsight : i))
       );
       setSelectedInsight(updatedInsight);
-      addToast(response.message || 'Thank you for your feedback!', 'success');
-    } catch (error) {
-      addToast('Failed to submit feedback', 'error');
+      addToast(response.message || "Thank you for your feedback!", "success");
+    } catch {
+      addToast("Failed to submit feedback", "error");
     }
   };
 

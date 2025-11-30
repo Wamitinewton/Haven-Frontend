@@ -18,6 +18,7 @@
     "react-markdown": "^9.0.1",
     "react-router-dom": "^7.9.5",
     "react-use-websocket": "^3.0.0",
+    "recharts": "^3.5.0",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "^4.1.17"
   },

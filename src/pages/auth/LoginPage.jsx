@@ -4,7 +4,6 @@ import { LOGO, LOGIN_BG } from "../../assets";
 export const LoginPage = () => {
   return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

@@ -1,11 +1,10 @@
 export const API_BASE_URL =
   "https://haven-drauhuadfhf9bjby.southafricanorth-01.azurewebsites.net/api";
+const BACKEND_HOST =
+  "haven-drauhuadfhf9bjby.southafricanorth-01.azurewebsites.net";
+const wsProtocol = "wss:";
 
-const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-const wsHost = window.location.hostname;
-const wsPort = import.meta.env.DEV ? "8081" : window.location.port;
-
-export const WS_BASE_URL = `${wsProtocol}//${wsHost}:${wsPort}/ws/chat`;
+export const WS_BASE_URL = `${wsProtocol}//${BACKEND_HOST}/ws/chat`;
 
 export const TOKEN_KEYS = {
   ACCESS_TOKEN: "access_token",
